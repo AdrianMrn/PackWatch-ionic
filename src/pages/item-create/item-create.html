@@ -36,7 +36,7 @@
       <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.profilePic.value"></div>
     </div> -->
 
-    <div class="profile-image-wrapper" (click)="writeNfc()">
+    <div class="profile-image-wrapper" (click)="addNfcListeners()">
       <div class="profile-image-placeholder" *ngIf="!this.form.controls.profilePic.value">
         <ion-icon name="add"></ion-icon>
         <div>

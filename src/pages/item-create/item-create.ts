@@ -52,26 +52,36 @@ export class ItemCreatePage {
     }
   }
 
-  writeNfc(nfcEvent) {
-    alert("fuck");
-    this.nfc.addNdefListener(() => {
-      console.log('successfully attached ndef listener');
-    }, (err) => {
-      console.log('error attaching ndef listener', err);
-    }).subscribe((event) => {
-      console.log('received ndef message. the tag contains: ', event.tag);
-      console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
+  addNfcListeners():void {
+        this.nfc.addTagDiscoveredListener((tagEvent:Event) => this.tagListenerSuccess(tagEvent));
+        this.nfc.addNdefListener((tagEvent:Event) => this.tagListenerSuccess(tagEvent));
+    }
+  tagListenerSuccess(tagEvent:Event) {
+       console.log(tagEvent);
+       alert("succesfull read" + tagEvent);
+   }
+
+  // writeNfc(nfcEvent) {
+  //   alert("fuck");
+  //   this.nfc.addNdefListener(() => {
+  //     alert('successfully attached ndef listener');
+  //     let tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+      
+  //           var message = this.nfc.bytesToString(ndefMessage[0].payload);
+      
+  //           alert(message);
+  //   }, (err) => {
+  //     alert('error attaching ndef listener'+ err);
+  //   }).subscribe((event) => {
+  //     alert('received ndef message. the tag contains: '+ event.tag);
+  //     alert('decoded tag id'+ this.nfc.bytesToHexString(event.tag.id));
     
-      /* let message = this.ndef.textRecord('Hello world'); */
-      /* this.nfc.write([message]); */
+  //     /* let message = this.ndef.textRecord('Hello world'); */
+  //     /* this.nfc.write([message]); */
 
-      let tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
-
-      var message = this.nfc.bytesToString(ndefMessage[0].payload);
-
-      alert(message);
-    });
-  }
+      
+  //   });
+  // }
 
   processWebImage(event) {
     let reader = new FileReader();
