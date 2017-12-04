@@ -1,0 +1,8 @@
+{
+  "name": "packwatch",
+  "app_id": "e311eba8",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
