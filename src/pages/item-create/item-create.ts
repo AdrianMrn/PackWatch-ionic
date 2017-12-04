@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { IonicPage, NavController, ViewController } from 'ionic-angular';
 
+import { NFC, Ndef } from '@ionic-native/nfc';
+
 @IonicPage()
 @Component({
   selector: 'page-item-create',
@@ -17,7 +19,7 @@ export class ItemCreatePage {
 
   form: FormGroup;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera, private nfc: NFC, private ndef: Ndef) {
     this.form = formBuilder.group({
       profilePic: [''],
       name: ['', Validators.required],
@@ -48,6 +50,27 @@ export class ItemCreatePage {
     } else {
       this.fileInput.nativeElement.click();
     }
+  }
+
+  writeNfc(nfcEvent) {
+    alert("fuck");
+    this.nfc.addNdefListener(() => {
+      console.log('successfully attached ndef listener');
+    }, (err) => {
+      console.log('error attaching ndef listener', err);
+    }).subscribe((event) => {
+      console.log('received ndef message. the tag contains: ', event.tag);
+      console.log('decoded tag id', this.nfc.bytesToHexString(event.tag.id));
+    
+      /* let message = this.ndef.textRecord('Hello world'); */
+      /* this.nfc.write([message]); */
+
+      let tag = nfcEvent.tag, ndefMessage = tag.ndefMessage;
+
+      var message = this.nfc.bytesToString(ndefMessage[0].payload);
+
+      alert(message);
+    });
   }
 
   processWebImage(event) {
